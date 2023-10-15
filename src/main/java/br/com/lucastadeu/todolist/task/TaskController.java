@@ -55,5 +55,4 @@ public class TaskController {
         var taskUpdated = this.taskRepository.save(task);
         return ResponseEntity.ok().body(taskUpdated);
     }
-
 }
