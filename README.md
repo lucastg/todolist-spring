@@ -26,6 +26,8 @@
 
 > Acesse a aplicação no navegador em http://localhost:8080/
 
+Obs.: Foi incluido na raiz do projeto a collection para import no postman ou outra plataforma de preferência.
+
 ## Funcionalidades
 A aplicação permite que você cadastre, edite e exclua tarefas. Você também pode marcar tarefas como concluídas.
 
