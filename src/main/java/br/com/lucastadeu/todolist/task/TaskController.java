@@ -24,10 +24,10 @@ public class TaskController {
         taskModel.setIdUser((UUID) idUser);
 
         var currentDate = LocalDateTime.now();
-        if (currentDate.isAfter(taskModel.getStarAt()) || currentDate.isAfter(taskModel.getEndAt())) {
+        if (currentDate.isAfter(taskModel.getStartAt()) || currentDate.isAfter(taskModel.getEndAt())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("A data de inicio / data de termino tem que ser maior que a atual!");
         }
-        if (taskModel.getStarAt().isAfter(taskModel.getEndAt())) {
+        if (taskModel.getStartAt().isAfter(taskModel.getEndAt())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("A data de inicio deve ser menor de que a de termino!");
         }
 
@@ -44,11 +44,16 @@ public class TaskController {
 
     @PutMapping("/{id}")
     public ResponseEntity update(@RequestBody TaskModel taskModel, @PathVariable UUID id, HttpServletRequest request) {
-
+        var idUser = request.getAttribute("idUser");
         var task = this.taskRepository.findById(id).orElse(null);
         if (task == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Tarefa não encontrada!");
+        }
+
+        if (!task.getIdUser().equals(idUser)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Usuário não tem permissão para alterar essa tarefa");
         }
 
         Utils.copyNonNullProperties(taskModel, task);

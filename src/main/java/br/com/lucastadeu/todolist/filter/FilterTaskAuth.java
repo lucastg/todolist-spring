@@ -39,7 +39,7 @@ public class FilterTaskAuth extends OncePerRequestFilter {
 
             var user = this.userRepository.findByUsername(username);
             if (user == null) {
-                response.sendError(401);
+                response.sendError(401, "Usuario não existe!");
             } else {
 
                 var passwordVerify = BCrypt.verifyer().verify(password.toCharArray(), user.getPassword());
@@ -50,7 +50,7 @@ public class FilterTaskAuth extends OncePerRequestFilter {
                     response.sendError(401);
                 }
             }
-        }else {
+        } else {
             filterChain.doFilter(request, response);
         }
     }
